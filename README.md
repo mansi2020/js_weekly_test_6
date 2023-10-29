@@ -1,4 +1,4 @@
-# js_weekly_test_6
+# Hosted Link :  https://mansi2020.github.io/js_weekly_test_6/
 
 # Code description
 It declares several variables to store DOM elements and data:
