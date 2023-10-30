@@ -33,15 +33,16 @@ function displayAllBooksToRight(bookleftNavnodelist) {
   });
 }
 
-//todo displayBookOfclickedCat
+//todo displayBookOfclickedCat(dynamic)
 function displayBookOfclickedCat(data, head) {
+  let rightDivDynamicArr = [];
+  //data is araray of all book which show in dynamic part
   rightNav.style.display = "block";
   let bookCat = document.createElement("div");
   bookCat.innerHTML = `
     <h1 class="otherCatHeading">${head}</h1>
   `;
   bookCat.classList.add("bookCatDisplayCat");
-
   data.forEach((book) => {
     // div for one book
     let bookCatSub = document.createElement("div");
@@ -67,8 +68,78 @@ function displayBookOfclickedCat(data, head) {
     bookCatSub.appendChild(bookName);
     bookCatSub.appendChild(autorName);
     bookCat.appendChild(bookCatSub);
+    rightNav.appendChild(bookCat);
+    rightDivDynamicArr = document.querySelectorAll(".bookCatSubDisplayCat");
+    
   });
-  rightNav.appendChild(bookCat);
+  
+  // console.log(rightDivDynamicArr);
+  //todo pop up menu for default page books
+  let closePopup;
+  let popDivParent;
+  rightDivDynamicArr.forEach((item, idx) => {
+    // console.log(item);
+    item.addEventListener("click", (e) => {
+      popDivParent = document.createElement("div");
+      popDivParent.style.display = "flex";
+      let popDiv = document.createElement("div");
+
+      let desdcription = "";
+      if (data[idx].description == "") {
+        desdcription = "there is no description of this book";
+      } else {
+        desdcription = data[idx].description;
+      }
+      //   add class to popup
+      popDivParent.classList.add("popDivParent");
+      popDiv.classList.add("popDiv");
+
+      popDiv.innerHTML = `
+        <div class="contentContainer">
+                <div class="content">
+                    <div class="descHead">
+                        <div class="headofclose">
+                            <h3>${data[idx].title}</h3>
+                            <div class="closePopUp">X</div>
+                        </div>
+                        
+                        <p>${data[idx].author}<p>
+                    <div>
+                    <div class="des">
+                        ${desdcription}
+                    </div>
+                    <div class="icon">
+                        <img id="first" src = "icon1.png"/>
+                        <img src = "icon2.png"/>
+                        <img src = "icon3.png"/>
+                    </div>
+                </div>  
+        </div>
+      `;
+
+      let popUpimg = document.createElement("img");
+      popUpimg.classList.add("popUpimage");
+      popUpimg.src = data[idx].book_image;
+      console.log(popUpimg.src);
+      popDiv.insertBefore(popUpimg, popDiv.children[0]);
+
+      let button = document.createElement("button");
+      button.innerText = "ADD TO SHOPPING LIST";
+      button.classList.add("addToshoppingButton");
+      popDiv.appendChild(button);
+      popDivParent.appendChild(popDiv);
+      container.appendChild(popDivParent);
+      closePopup = document.querySelectorAll(".closePopUp");
+      
+
+      closePopup.forEach((item)=>{
+        item.addEventListener("click", (e) => {
+          console.log("hello");
+          popDivParent.style.display = "none";
+        });
+      })
+    });
+  });
 }
 
 //todo display booksList
@@ -84,7 +155,7 @@ function displayBookList() {
   displayAllBooksToRight(bookleftNavnodelist);
 }
 
-//todo display books
+//todo display default page books
 function displayBook(data) {
   console.log(data);
   data.forEach((book) => {
@@ -200,22 +271,16 @@ function displayBook(data) {
       popDiv.appendChild(button);
       popDivParent.appendChild(popDiv);
       container.appendChild(popDivParent);
-      closePopup = document.querySelector(".closePopUp");
-      console.log(closePopup);
+      closePopup = document.querySelectorAll(".closePopUp");
+      
 
-      closePopupMenu(closePopup, popDivParent);
-      console.log(popDivParent);
+      closePopup.forEach((item)=>{
+        item.addEventListener("click", (e) => {
+          console.log("hello");
+          popDivParent.style.display = "none";
+        });
+      })
     });
-  });
-}
-
-//todo close popup
-function closePopupMenu(closePopup, popDivParent) {
-  console.log("hello");
-  console.log(closePopup, popDivParent);
-  closePopup.addEventListener("click", (e) => {
-    console.log("hello");
-    popDivParent.style.display = "none";
   });
 }
 
@@ -230,7 +295,6 @@ async function bookList() {
   displayBookList();
 }
 bookList();
-// console.log(flag);
 
 //todo fetch detail data of books
 let dataBookDetail = [];
@@ -242,17 +306,3 @@ async function booksData() {
 }
 booksData();
 
-// //todo pop up
-// function showPopup(rightNavDefaultArr){
-//     rightNavDefaultArr.forEach((item)=>{
-//         item.addEventListener("click",(e)=>{
-//             let popDivParent = document.createElement
-//             let popDiv = document.createElement("div");
-//             popDiv.innerHTML = `
-
-//             `
-//             console.log(e.target);
-//         })
-
-//     });
-// }
